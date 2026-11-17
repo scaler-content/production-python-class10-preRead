@@ -1,0 +1,751 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Class 10 Pre-Read</title>
+<style>
+  :root {
+    color-scheme: light;
+    --bg: #faf6ef; --card: #fffdf9; --text: #2e2820; --muted: #6e6455;
+    --accent: #b4532a; --accent-soft: #f8ebe0; --border: #e8dfd0;
+    --code-bg: #f4eee2; --code-text: #2e2820;
+    --ok: #2f7a47; --ok-soft: #e8f2e3; --warn: #94590a; --warn-soft: #fbeed0;
+    --bad: #b3261e; --bad-soft: #fbe6e1; --shadow: 0 1px 3px rgba(80,55,20,.10);
+  }
+  
+    * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; scroll-padding-top: 118px; }
+  body {
+    margin: 0; background: var(--bg); color: var(--text);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    line-height: 1.6; font-size: 17px;
+  }
+  .wrap { max-width: 880px; margin: 0 auto; padding: 0 18px 80px; }
+  header.hero { padding: 38px 0 18px; }
+  .kicker { color: var(--accent); font-weight: 700; font-size: 13px; letter-spacing: .08em; text-transform: uppercase; }
+  h1 { font-size: 34px; line-height: 1.2; margin: 6px 0 10px; }
+  .lead { color: var(--muted); font-size: 18px; margin: 0 0 12px; }
+  .pills { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 10px; }
+  .pill { background: var(--accent-soft); color: var(--accent); border-radius: 999px; padding: 4px 12px; font-size: 14px; font-weight: 600; }
+
+  .topbar {
+    position: sticky; top: 0; z-index: 20; background: var(--bg);
+    border-bottom: 1px solid var(--border); padding: 8px 0 8px;
+  }
+  .topbar .wrap { padding-bottom: 0; }
+  .progress { height: 8px; background: var(--border); border-radius: 99px; overflow: hidden; margin-bottom: 8px; }
+  .progress > div { height: 100%; width: 0; background: var(--ok); transition: width .3s ease; }
+  nav { display: flex; gap: 6px; flex-wrap: wrap; font-size: 14px; }
+  nav a {
+    text-decoration: none; color: var(--muted); padding: 3px 10px; border-radius: 99px;
+    border: 1px solid var(--border); background: var(--card);
+  }
+  nav a:hover { color: var(--accent); border-color: var(--accent); }
+  nav a.done { color: var(--ok); border-color: var(--ok); }
+  .pct { font-size: 13px; color: var(--muted); margin: 0 0 6px; }
+
+  section.card {
+    background: var(--card); border: 1px solid var(--border); border-radius: 14px;
+    padding: 22px 24px; margin: 22px 0; box-shadow: var(--shadow);
+  }
+  section.card h2 { font-size: 25px; margin: 0 0 4px; line-height: 1.25; }
+  .num { color: var(--accent); }
+  h3 { font-size: 19px; margin: 26px 0 6px; }
+  p { margin: 8px 0; }
+  ul, ol { padding-left: 22px; margin: 8px 0; }
+  li { margin: 4px 0; }
+  .muted { color: var(--muted); }
+  .small { font-size: 14px; }
+
+  .callout { border-radius: 10px; padding: 12px 16px; margin: 14px 0; border-left: 5px solid; }
+  .callout.tip { background: var(--accent-soft); border-color: var(--accent); }
+  .callout.warn { background: var(--warn-soft); border-color: var(--warn); }
+  .callout.ok { background: var(--ok-soft); border-color: var(--ok); }
+  .callout strong.t { display: block; margin-bottom: 2px; }
+
+  code, pre, .mono { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace; }
+  code { background: var(--code-bg); padding: 1px 6px; border-radius: 5px; font-size: .92em; }
+  .codeblock { position: relative; margin: 12px 0; }
+  .codeblock pre {
+    margin: 0; background: var(--code-bg); color: var(--code-text); border: 1px solid var(--border);
+    border-radius: 10px; padding: 14px 16px; overflow-x: auto; font-size: 15px; line-height: 1.5;
+  }
+  .codeblock .label { font-size: 13px; color: var(--muted); margin-bottom: 4px; font-weight: 600; }
+  .copy {
+    position: absolute; top: 8px; right: 8px; font-size: 12px; padding: 3px 9px; border-radius: 6px;
+    border: 1px solid var(--border); background: var(--card); color: var(--muted); cursor: pointer;
+  }
+  .copy:hover { color: var(--accent); border-color: var(--accent); }
+  .placeholder {
+    background: var(--warn-soft); color: var(--warn); border: 1px dashed var(--warn);
+    padding: 0 6px; border-radius: 5px; font-weight: 600; white-space: nowrap;
+  }
+
+  table { border-collapse: collapse; width: 100%; margin: 12px 0; font-size: 15px; }
+  th, td { border: 1px solid var(--border); padding: 8px 10px; text-align: left; vertical-align: top; }
+  th { background: var(--accent-soft); color: var(--accent); }
+  .tablewrap { overflow-x: auto; }
+
+  /* tabs */
+  .tabs { margin: 14px 0; }
+  .tablist { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 10px; }
+  .tablist button {
+    font: inherit; font-size: 15px; font-weight: 600; padding: 7px 16px; border-radius: 99px; cursor: pointer;
+    border: 1px solid var(--border); background: var(--card); color: var(--muted);
+  }
+  .tablist button[aria-selected="true"] { background: var(--accent); color: #fff; border-color: var(--accent); }
+  
+  .tabpanel { display: none; }
+  .tabpanel.active { display: block; }
+  .steps { counter-reset: s; list-style: none; padding-left: 0; }
+  .steps li { counter-increment: s; position: relative; padding-left: 38px; margin: 10px 0; }
+  .steps li::before {
+    content: counter(s); position: absolute; left: 0; top: 0; width: 26px; height: 26px; border-radius: 50%;
+    background: var(--accent); color: #fff; font-weight: 700; font-size: 14px; display: grid; place-items: center;
+  }
+  
+
+  /* diagrams */
+  .flow { display: flex; flex-wrap: wrap; gap: 8px; align-items: stretch; margin: 14px 0; }
+  .flow .box {
+    flex: 1 1 150px; border: 2px solid var(--accent); border-radius: 12px; padding: 10px 12px; background: var(--accent-soft);
+  }
+  .flow .box b { display: block; color: var(--accent); font-size: 18px; }
+  .flow .arrow { align-self: center; font-size: 22px; color: var(--accent); }
+
+  .anatomy { display: flex; flex-wrap: wrap; gap: 6px; margin: 10px 0; font-family: ui-monospace, Menlo, Consolas, monospace; }
+  .anatomy span { padding: 6px 10px; border-radius: 8px; font-size: 15px; }
+  .a-prompt { background: #3b4a6b; color: #fff; }
+  .a-cmd { background: #1f7a3a; color: #fff; }
+  .a-out { background: var(--code-bg); border: 1px solid var(--border); color: var(--code-text); }
+  .legend { font-size: 14px; color: var(--muted); }
+
+  .tasks { list-style: none; padding: 0; margin: 10px 0; }
+  .tasks li { padding: 6px 10px; border: 1px solid var(--border); border-radius: 8px; margin: 6px 0; display: flex; gap: 10px; align-items: center; background: var(--card); }
+  .tasks li .ck { width: 22px; height: 22px; border-radius: 50%; border: 2px solid var(--border); display: grid; place-items: center; font-size: 13px; flex: none; }
+  .tasks li.done { background: var(--ok-soft); border-color: var(--ok); }
+  .tasks li.done .ck { background: var(--ok); border-color: var(--ok); color: #fff; }
+  .btn {
+    font: inherit; font-size: 15px; font-weight: 600; padding: 8px 16px; border-radius: 10px; cursor: pointer;
+    border: 1px solid var(--accent); background: var(--accent); color: #fff;
+  }
+  
+  .btn.ghost { background: transparent; color: var(--accent); }
+  .btnrow { display: flex; gap: 8px; flex-wrap: wrap; margin: 8px 0; }
+  .hint { min-height: 24px; font-size: 15px; margin: 6px 0; }
+  .hint.good { color: var(--ok); } .hint.bad { color: var(--bad); }
+
+  /* chips / cards */
+  .chips { display: flex; gap: 8px; flex-wrap: wrap; margin: 10px 0; }
+  .chip {
+    font-family: ui-monospace, Menlo, Consolas, monospace; font-size: 16px; padding: 7px 14px; border-radius: 10px; cursor: pointer;
+    border: 1px solid var(--border); background: var(--card); color: var(--text);
+  }
+  .chip[aria-pressed="true"] { border-color: var(--accent); background: var(--accent-soft); color: var(--accent); }
+  .readout { background: var(--code-bg); border: 1px solid var(--border); border-radius: 10px; padding: 12px 14px; min-height: 64px; }
+  .twocol { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  @media (max-width: 680px) { .twocol { grid-template-columns: 1fr; } }
+  .panel { border: 1px solid var(--border); border-radius: 10px; padding: 12px 14px; background: var(--card); }
+  .panel h4 { margin: 0 0 6px; font-size: 15px; color: var(--muted); text-transform: uppercase; letter-spacing: .05em; }
+  .cardgrid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
+  @media (max-width: 680px) { .cardgrid { grid-template-columns: 1fr; } }
+
+  /* quiz */
+  .quiz .q { border: 1px solid var(--border); border-radius: 10px; padding: 12px 14px; margin: 12px 0; background: var(--card); }
+  .quiz .q p.qt { margin: 0 0 8px; font-weight: 600; }
+  .quiz .opt {
+    display: block; width: 100%; text-align: left; font: inherit; font-size: 16px; padding: 8px 12px; margin: 6px 0; cursor: pointer;
+    border-radius: 8px; border: 1px solid var(--border); background: var(--card); color: var(--text);
+  }
+  .quiz .opt:hover:not(:disabled) { border-color: var(--accent); }
+  .quiz .opt.right { background: var(--ok-soft); border-color: var(--ok); }
+  .quiz .opt.wrong { background: var(--bad-soft); border-color: var(--bad); }
+  .quiz .fb { font-size: 15px; margin-top: 6px; }
+  .score { font-size: 20px; font-weight: 700; margin: 10px 0; }
+
+  .donebar { display: flex; align-items: center; gap: 12px; margin-top: 18px; padding-top: 14px; border-top: 1px dashed var(--border); flex-wrap: wrap; }
+  .donebtn {
+    font: inherit; font-size: 15px; font-weight: 600; padding: 7px 14px; border-radius: 99px; cursor: pointer;
+    border: 1px solid var(--ok); color: var(--ok); background: transparent;
+  }
+  .donebtn[aria-pressed="true"] { background: var(--ok); color: #fff; }
+  
+  footer { text-align: center; color: var(--muted); font-size: 14px; margin-top: 30px; }
+  .sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+
+  /* ---- additions for Class 2 ---- */
+  /* sorter */
+  .sorter { margin: 14px 0; }
+  .sorter .pool { display: flex; gap: 8px; flex-wrap: wrap; min-height: 44px; padding: 10px; border: 1px dashed var(--border); border-radius: 10px; background: var(--card); }
+  .sorter .pool .chip { font-size: 15px; }
+  .sorter .pool .empty { color: var(--ok); font-weight: 600; }
+  .sorter .bins { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; margin-top: 12px; }
+  .sorter .bins.two { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  @media (max-width: 680px) { .sorter .bins, .sorter .bins.two { grid-template-columns: 1fr 1fr; } }
+  @media (max-width: 420px) { .sorter .bins, .sorter .bins.two { grid-template-columns: 1fr; } }
+  .sorter .bin {
+    font: inherit; text-align: left; cursor: pointer; border: 2px solid var(--border); border-radius: 12px; padding: 10px 12px;
+    background: var(--card); color: var(--text); min-height: 84px;
+  }
+  .sorter .bin:hover { border-color: var(--accent); }
+  .sorter .bin b { display: block; color: var(--accent); font-size: 16px; margin-bottom: 2px; }
+  .sorter .bin .why { display: block; font-size: 13px; color: var(--muted); margin-bottom: 6px; }
+  .sorter .bin .placed { display: flex; flex-wrap: wrap; gap: 4px; }
+  .sorter .bin .placed span { font-family: ui-monospace, Menlo, Consolas, monospace; font-size: 13px; background: var(--ok-soft); border: 1px solid var(--ok); color: var(--ok); border-radius: 6px; padding: 0 6px; }
+  .sorter .bin.flash { border-color: var(--bad); background: var(--bad-soft); }
+  .chip.sel { border-color: var(--accent); background: var(--accent-soft); color: var(--accent); }
+
+  /* folder explorer */
+  .explorer { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.3fr); gap: 12px; }
+  @media (max-width: 680px) { .explorer { grid-template-columns: 1fr; } }
+  .explorer .tree button {
+    display: block; width: 100%; text-align: left; font-family: ui-monospace, Menlo, Consolas, monospace; font-size: 15px;
+    background: transparent; border: none; padding: 5px 8px; border-radius: 8px; cursor: pointer; color: var(--text);
+  }
+  .explorer .tree button.f { color: var(--accent); font-weight: 600; }
+  .explorer .tree button[aria-pressed="true"] { background: var(--accent-soft); }
+  .explorer .tree .ind { padding-left: 22px; }
+  .explorer .tree .dim { color: var(--muted); font-family: ui-monospace, Menlo, Consolas, monospace; font-size: 14px; padding: 2px 8px 2px 30px; }
+
+  /* layers */
+  .layers .l { border-radius: 10px; padding: 10px 14px; margin: 6px 0; border: 1px solid var(--border); }
+  .layers .l1 { background: var(--ok-soft); border-color: var(--ok); }
+  .layers .l2 { background: var(--warn-soft); border-color: var(--warn); }
+  .layers .l3 { background: var(--accent-soft); border-color: var(--accent); }
+  .layers b { display: block; }
+
+  .tasks li { align-items: flex-start; }
+  .tasks li .tx { min-width: 0; overflow-wrap: anywhere; }
+  .tasks li .tx code { white-space: normal; }
+</style>
+</head>
+<body>
+<div class="topbar">
+  <div class="wrap">
+    <div class="progress" aria-hidden="true"><div id="bar"></div></div>
+    <p class="pct" id="pct">Progress: 0 of 8 sections marked done</p>
+    <nav id="nav" aria-label="Sections">
+      <a href="#s1" data-s="s1">1 Welcome</a>
+      <a href="#s2" data-s="s2">2 Big idea</a>
+      <a href="#s3" data-s="s3">3 Tools</a>
+      <a href="#s4" data-s="s4">4 Project</a>
+      <a href="#s5" data-s="s5">5 Ports</a>
+      <a href="#s6" data-s="s6">6 Teams</a>
+      <a href="#s7" data-s="s7">7 Compare</a>
+      <a href="#s8" data-s="s8">8 Check yourself</a>
+    </nav>
+  </div>
+</div>
+
+<div class="wrap">
+
+<header class="hero">
+  <div class="kicker">FDE Module 2 &middot; Pre-read for Class 10</div>
+  <h1>Code That Survives the Next Engineer</h1>
+  <p class="lead">Class 9 made the Workbench fast without changing a single report. Class 10 asks what happens when someone else has to change it. A client wants to try a second AI vendor, a new engineer joins, and two people edit the same setting on the same day. You will draw a seam around the vendor, prove that the seam holds, work on one branch without hurting each other, review a change with evidence, and compare a second provider using only what was measured. Read this before class, then arrive with your tools ready.</p>
+  <div class="pills">
+    <span class="pill">About 40 minutes</span>
+    <span class="pill">Check your tools</span>
+    <span class="pill">Quick games and a short quiz</span>
+  </div>
+</header>
+
+<!-- ================= 1 WELCOME ================= -->
+<section class="card" id="s1">
+  <h2><span class="num">1.</span> Welcome</h2>
+  <p>In Class 9 you made a big run faster and proved that the reports stayed byte for byte the same. The Workbench is still tied to one vendor in ways that are hard to see. The Operations lead sends a message: <em>&ldquo;A second vendor says they are cheaper. Before we talk to them, can you tell me what it would take to switch, and how we would know the answers are as good? Also, Ana starts on Monday. Can she change this code safely?&rdquo;</em> Today you answer with evidence. The rule of the class is: <strong>draw the seam, prove it holds, then compare with evidence</strong>. A seam is a place where one part can be swapped without touching the rest.</p>
+  <p>By the end of class you will have:</p>
+  <div class="cardgrid">
+    <div class="panel">
+      <h4>You will learn to</h4>
+      <ul>
+        <li>Audit code for <strong>hidden dependencies</strong>, and say which of the five <strong>SOLID</strong> ideas each fix uses</li>
+        <li>Write a <strong>port</strong> (what the core needs) and an <strong>adapter</strong> (one vendor&rsquo;s way of giving it), with <code>typing.Protocol</code> and with <code>abc.ABC</code>, and know when each fits</li>
+        <li>Test the core with a <strong>fake</strong>, and tell a faithful fake from a loud one</li>
+        <li>Guard the layers with an <strong>architecture test</strong>, and pin a prompt with a <strong>contract</strong></li>
+        <li>Work with <strong>trunk-based development</strong>, resolve a real <strong>merge conflict</strong>, and review a change with a command, the printed line and an ask</li>
+        <li>Compare a second provider, keeping <strong>measured</strong>, <strong>simulated</strong> and <strong>asserted</strong> facts apart, and write the decision down</li>
+      </ul>
+    </div>
+    <div class="panel">
+      <h4>You do not need to</h4>
+      <ul>
+        <li>Memorise SOLID. We tie each letter to one thing you can run</li>
+        <li>Know advanced Git. We use six commands and one conflict</li>
+        <li>Have an API key. The second vendor, <strong>Northwind</strong>, is a <strong>simulated</strong> vendor that we built for the class</li>
+        <li>Know any design-pattern vocabulary. Every word is defined when it first appears</li>
+        <li>Pay for anything</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="callout tip"><strong class="t">How to use this page</strong>
+    Go in order. Section 3 is the one to finish <strong>before</strong> class, because it checks your Class 9 project and installs the small starter pack. Click the small interactive boxes, since they help you remember. Press <em>Mark as done</em> at the end of each section. If a step fails, write down what you saw and tell your instructor. Please do not spend more than 15 minutes stuck on any one thing.
+  </div>
+  <div class="donebar"><button class="donebtn" data-done="s1" aria-pressed="false">Mark as done</button></div>
+</section>
+
+<!-- ================= 2 BIG IDEA ================= -->
+<section class="card" id="s2">
+  <h2><span class="num">2.</span> The big idea: draw the seam</h2>
+  <p>A wall socket is a seam. The lamp does not care who made the power station, and the power station does not care which lamp you plug in. The Workbench&rsquo;s rules (is a case overdue?) should be like the lamp: they should not know which AI vendor answers. Class 10 finds where that is not yet true, fixes it, and then lets a second vendor plug in.</p>
+  <p>The class works through four findings, each one backed by a number, not a feeling. Click each one to see what we found and where we fix it.</p>
+  <div class="chips" id="hideChips">
+    <button class="chip" data-i="0" aria-pressed="false">A hidden dependency</button>
+    <button class="chip" data-i="1" aria-pressed="false">A fake that is too loud</button>
+    <button class="chip" data-i="2" aria-pressed="false">A prompt label that lies</button>
+    <button class="chip" data-i="3" aria-pressed="false">A cheaper vendor that looks good</button>
+  </div>
+  <div class="readout" id="hideOut" aria-live="polite">Click an item above.</div>
+
+  <h3>The three promises of Class 10</h3>
+  <div class="flow" aria-label="Three promises">
+    <div class="box"><b>1. Draw the seam</b>The core asks for what it needs, and each vendor or file format is an adapter behind that ask</div><div class="arrow">&rarr;</div>
+    <div class="box"><b>2. Prove it holds</b>Fakes, an architecture test and a prompt contract fail loudly when the seam is broken</div><div class="arrow">&rarr;</div>
+    <div class="box"><b>3. Decide with evidence</b>Measured, simulated and asserted facts stay apart, and the requirements are written before the ranking</div>
+  </div>
+
+  <div class="callout warn"><strong class="t">What we will not do in Class 10</strong>
+    No real vendor and no API key: <strong>Northwind</strong> is a simulated vendor, and its prices, regions and retention terms are <strong>assumptions</strong> in a dated file, not quotes. No rewrite of Class 9 and no dependency-injection framework: the seam is a few small files. The reports, the three fingerprints and the Streamlit app stay the same.
+  </div>
+  <div class="donebar"><button class="donebtn" data-done="s2" aria-pressed="false">Mark as done</button></div>
+</section>
+
+<!-- ================= 3 TOOLS ================= -->
+<section class="card" id="s3">
+  <h2><span class="num">3.</span> Check your tools</h2>
+  <p>Most of the setup is in class. Before class you only need to confirm four things. Allow about 15 minutes.</p>
+  <div class="tablewrap">
+  <table>
+    <tr><th>What</th><th>Why it matters</th><th>Ready when</th></tr>
+    <tr><td><strong>Python</strong></td><td>Runs the program. The project is built, tested and checked on Python 3.11</td><td><span class="placeholder">3.11</span></td></tr>
+    <tr><td><strong>Your Class 9 project</strong></td><td>Class 10 builds on it, one file at a time</td><td>It runs, <code>pytest</code> shows <code>220 passed, 1 xfailed</code>, and <code>mypy</code> shows <code>Success: no issues found in 69 source files</code></td></tr>
+    <tr><td><strong>Starter Files for Class 10</strong></td><td>A simulated vendor, a provider-facts file, two price rows, a small demo helper and an empty decision template</td><td>Downloaded from the link your instructor shares, and unzipped over your project. Then <code>mypy</code> shows <code>70 source files</code></td></tr>
+    <tr><td><strong>Git</strong></td><td>The branching part of the class uses a real repository and one real merge conflict</td><td><code>git --version</code> prints a version, and <code>git config user.name</code> prints a name</td></tr>
+  </table>
+  </div>
+
+  <h3>3.1 Check Python and Git</h3>
+  <p>Open a terminal and run the command for your system. Please use Python 3.11. Python 3.12 and 3.13 run pytest and ruff correctly, but the type check (mypy) stops with an error about a numpy stub on those versions, so the project stays on 3.11.</p>
+  <div class="tabs" data-tabs="pyver">
+    <div class="tablist" role="tablist" aria-label="Operating system">
+      <button role="tab" aria-selected="true" data-tab="win">Windows</button>
+      <button role="tab" aria-selected="false" data-tab="mac">Mac and Linux</button>
+    </div>
+    <div class="tabpanel active" data-panel="win">
+      <div class="codeblock"><div class="label">Windows PowerShell</div><button class="copy">Copy</button><pre>py --version
+# You should see something like: Python 3.11.9
+git --version
+# You should see something like: git version 2.45.0</pre></div>
+    </div>
+    <div class="tabpanel" data-panel="mac">
+      <div class="codeblock"><div class="label">macOS or Linux</div><button class="copy">Copy</button><pre>python3 --version
+# You should see something like: Python 3.11.9
+git --version
+# You should see something like: git version 2.45.0</pre></div>
+    </div>
+  </div>
+
+  <h3>3.2 Check your Class 9 project, then add the starter pack</h3>
+  <p>Open your project folder in VS Code and make sure your virtual environment is active. On Windows use <code>py</code> instead of <code>python3</code> if <code>python</code> is not found.</p>
+  <div class="codeblock"><div class="label">From the project root, with the environment active</div><button class="copy">Copy</button><pre>python -m pytest -q
+# Expected: a last line that says 220 passed, 1 xfailed
+
+python -m mypy
+# Expected: Success: no issues found in 69 source files</pre></div>
+  <p>Now unzip the starter pack over your project. It adds files and makes two small additions to existing ones (two price rows and a demo helper), so nothing you wrote is lost.</p>
+  <div class="codeblock"><div class="label">After copying the Class 10 starter pack in</div><button class="copy">Copy</button><pre>python -m pytest -q
+# Expected: a last line that says 220 passed, 1 xfailed
+
+python -m mypy
+# Expected: Success: no issues found in 70 source files
+
+git config user.name
+git config user.email
+# Expected: each prints a value. If either is empty, set it with: git config --global user.name "Your Name"</pre></div>
+  <p>The count of tests does not change, because the starter pack only adds what the class needs to start. The new checks are written in class.</p>
+
+  <div class="callout tip"><strong class="t">A note about your own numbers</strong>
+    The vendor <strong>Northwind</strong> is simulated: its answers come from a small program in <code>vendor_sim.py</code>, its prices are an <strong>assumption</strong>, and its region and retention terms are <strong>asserted</strong>, which means nobody has checked them. Token counts are estimated as the length of the text divided by four. Only the quality counts (how many replies were valid, grounded or correct) are measured, and even those are measured on a small set of ten notes. Read them as counts, not percentages: one case is ten points.
+  </div>
+
+  <h3>If something goes wrong</h3>
+  <div class="tablewrap">
+  <table>
+    <tr><th>What you see</th><th>Likely cause and fix</th></tr>
+    <tr><td>"Python was not found", or the version is 3.10 or lower</td><td>Install Python 3.11 from python.org, then open a new terminal and check again.</td></tr>
+    <tr><td>The tests do not show <code>220 passed, 1 xfailed</code></td><td>Do not fix it alone. Tell your instructor which test failed, and bring the last line of the error.</td></tr>
+    <tr><td><code>ModuleNotFoundError: No module named 'meridian_workbench.vendor_sim'</code></td><td>The starter pack was not unzipped into the project, or went into the wrong folder. Re-check that <code>vendor_sim.py</code> is under <code>src/meridian_workbench/</code> and <code>providers.toml</code> is under <code>config/</code>.</td></tr>
+    <tr><td><code>git</code> is not recognised, or it asks &ldquo;who are you&rdquo;</td><td>Install Git, open a new terminal, and set your name and email with <code>git config --global</code>. A commit needs both.</td></tr>
+    <tr><td><code>mypy</code> fails with an error about a numpy stub</td><td>You are likely on Python 3.12 or 3.13. Switch to 3.11 for this check; pytest and ruff are unaffected.</td></tr>
+    <tr><td>Fingerprints: DIFFERENT from before</td><td>Stop. A trusted report changed when it should not have. Class 10 changes structure, never the three Class 5 sample-batch fingerprints, so find which file changed before going further.</td></tr>
+  </table>
+  </div>
+  <div class="donebar"><button class="donebtn" data-done="s3" aria-pressed="false">Mark as done</button></div>
+</section>
+
+<!-- ================= 4 PROJECT ================= -->
+<section class="card" id="s4">
+  <h2><span class="num">4.</span> Where the new pieces go</h2>
+  <p>Class 10 adds a small file of ports, one adapter for each kind of file and vendor, an in-memory set of adapters for tests, a prompt contract, a provider comparison, and three short documents. Click a folder to see what changes.</p>
+  <div class="explorer">
+    <div class="panel tree" id="treeBox">
+      <button class="f" data-d="root" aria-pressed="true">meridian-workbench/</button>
+      <div class="ind">
+        <button class="f" data-d="src" aria-pressed="false">src/meridian_workbench/</button>
+        <button class="f" data-d="tests" aria-pressed="false">tests/</button>
+        <button class="f" data-d="config" aria-pressed="false">config/</button>
+        <button class="f" data-d="docs" aria-pressed="false">docs/</button>
+        <button data-d="files" aria-pressed="false">pyproject.toml, README.md &hellip;</button>
+      </div>
+    </div>
+    <div class="panel"><h4 id="treeTitle">The whole project</h4><div id="treeText"></div></div>
+  </div>
+  <div class="callout tip"><strong class="t">Picture it</strong>
+    A kitchen with one supplier. Class 9 made the kitchen fast. Class 10 puts a standard delivery hatch in the wall. Any supplier can use the hatch, a cardboard dummy can stand in for the supplier during a rehearsal, and a sign by the hatch says exactly which recipe version the kitchen is cooking.
+  </div>
+  <div class="donebar"><button class="donebtn" data-done="s4" aria-pressed="false">Mark as done</button></div>
+</section>
+
+<!-- ================= 5 PORTS ================= -->
+<section class="card" id="s5">
+  <h2><span class="num">5.</span> Ports, adapters and what SOLID means here</h2>
+  <p>A <strong>port</strong> is a small description of what the core needs, such as &ldquo;something that can answer one request&rdquo;. An <strong>adapter</strong> is one vendor&rsquo;s way of meeting it. The core is written against the port, so a new vendor means a new adapter and no edit to the core. The five SOLID ideas are not rules to memorise. In this class each one is one thing you can run.</p>
+  <div class="codeblock"><div class="label">A port, written as a Protocol: no inheritance needed</div><button class="copy">Copy</button><pre>from typing import Protocol, runtime_checkable
+
+@runtime_checkable
+class LlmClient(Protocol):
+    def complete(self, request: LlmRequest) -> LlmReply: ...
+
+# Any class with a matching complete() fits. It never has to inherit.
+# isinstance(PlainFake(), LlmClient)           -> True
+# LlmClient among PlainFake's parents          -> False</pre></div>
+  <p>Two ways to write a contract, and when each fits:</p>
+  <div class="tablewrap">
+  <table>
+    <tr><th>Tool</th><th>Good for</th><th>What we saw</th></tr>
+    <tr><td><strong>typing.Protocol</strong></td><td>A shape the core needs. Anyone with the right methods fits, with no import of your base class</td><td><code>LlmClient</code>, <code>RecordSource</code>, <code>ReportSink</code>, <code>RunJournal</code> and <code>BatchStore</code> are all Protocols</td></tr>
+    <tr><td><strong>abc.ABC</strong></td><td>Shared steps that every adapter must follow, with a few holes it has to fill</td><td><code>ProviderAdapter</code>: an adapter missing <code>_to_reply</code> and <code>_translate</code> cannot even be built, and says so at once</td></tr>
+  </table>
+  </div>
+  <p>The five ideas, each with the thing you will run in class:</p>
+  <div class="tablewrap">
+  <table>
+    <tr><th>Idea</th><th>In plain words</th><th>What we run</th></tr>
+    <tr><td><strong>S</strong> single responsibility</td><td>A module has one reason to change</td><td>The judge moves out of the loaders into <code>judge.py</code></td></tr>
+    <tr><td><strong>O</strong> open for extension</td><td>Add a behaviour without editing the core</td><td>A new <code>AlwaysAbstain</code> client works with 0 core files edited</td></tr>
+    <tr><td><strong>L</strong> substitutable</td><td>A stand-in must behave like the real thing</td><td>A faithful fake: 3 attempts. A loud fake that raises <code>ValueError</code>: 1 attempt</td></tr>
+    <tr><td><strong>I</strong> small interfaces</td><td>Ask for the little you use</td><td>Separate source and output ports, so a fake needs only what the test touches</td></tr>
+    <tr><td><strong>D</strong> depend on the port</td><td>The core imports the port, never the vendor</td><td>An architecture test scans the imports and fails if the core imports an adapter</td></tr>
+  </table>
+  </div>
+  <div class="callout warn"><strong class="t">A check that says yes to the wrong thing</strong>
+    With <code>@runtime_checkable</code>, <code>isinstance</code> checks the <em>names</em> of the methods and nothing else. A class whose <code>complete</code> takes a plain string passed it: <code>isinstance says: True</code>. It was <strong>mypy</strong> that caught the wrong shape: <code>Argument 1 to "use" has incompatible type "WrongShape"; expected "LlmClient"</code>. The runtime check is a guard against a missing method, and mypy is the check for the signature. Use both.
+  </div>
+  <div class="donebar"><button class="donebtn" data-done="s5" aria-pressed="false">Mark as done</button></div>
+</section>
+
+<!-- ================= 6 TEAMS ================= -->
+<section class="card" id="s6">
+  <h2><span class="num">6.</span> Working on it with other people</h2>
+  <p>A seam is only useful if the next engineer can change one side without breaking the other. That depends on how the team works as much as on the code: how branches are used, how conflicts are settled, and how a change is reviewed. In class we do all three on the real repository, with real output.</p>
+
+  <h3>ABC or Protocol?</h3>
+  <p>Click an item, then click the bin it belongs in.</p>
+  <div class="sorter" id="sortKinds"></div>
+
+  <h3>Trunk-based or GitFlow?</h3>
+  <p>Click an item, then click the bin that says which way of working it describes.</p>
+  <div class="sorter" id="sortWrap"></div>
+
+  <h3>Five things a good review catches</h3>
+  <p>Every review comment in class has the same three parts: a <strong>command</strong>, the <strong>line it printed</strong>, and an <strong>ask</strong>. Click a finding to see the evidence and the ask. The pull request is titled &ldquo;Fall back to second provider on timeout&rdquo;, and its author wrote &ldquo;All checks pass&rdquo;.</p>
+  <div class="chips" id="closeChips">
+    <button class="chip" data-i="0" aria-pressed="false">&ldquo;All checks pass&rdquo;</button>
+    <button class="chip" data-i="1" aria-pressed="false">A layer is crossed</button>
+    <button class="chip" data-i="2" aria-pressed="false">A wrong type</button>
+    <button class="chip" data-i="3" aria-pressed="false">A prompt leaks into an error</button>
+    <button class="chip" data-i="4" aria-pressed="false">Two people, one setting</button>
+  </div>
+  <div class="readout" id="closeOut" aria-live="polite">Click an item above.</div>
+
+  <div class="callout tip"><strong class="t">Same work, fewer branches</strong>
+    The same three changes took <strong>6 commits</strong> on trunk and <strong>9</strong> on GitFlow, besides the first. The long-lived branches were <code>['main']</code> on trunk and <code>['develop', 'main']</code> on GitFlow. Fewer long-lived branches means fewer places where two people&rsquo;s work can drift apart.
+  </div>
+  <div class="donebar"><button class="donebtn" data-done="s6" aria-pressed="false">Mark as done</button></div>
+</section>
+
+<!-- ================= 7 COMPARE ================= -->
+<section class="card" id="s7">
+  <h2><span class="num">7.</span> Compare a second provider with evidence</h2>
+  <p>With the seam in place, a second vendor is one more adapter. The harder question is whether to use it. A fair comparison has three rules, and the class follows all three.</p>
+  <div class="flow" aria-label="Comparison rules">
+    <div class="box"><b>1. Write the requirements first</b>In <code>config/providers.toml</code>, before anyone looks at a result</div><div class="arrow">&rarr;</div>
+    <div class="box"><b>2. Keep three kinds of fact apart</b>Measured here, simulated here, or asserted by a vendor</div><div class="arrow">&rarr;</div>
+    <div class="box"><b>3. Gate, then rank</b>A candidate that fails a requirement is not ranked</div>
+  </div>
+
+  <h3>Measured, simulated or asserted?</h3>
+  <p>Click an item, then click the bin for how we know it.</p>
+  <div class="sorter" id="sortRetry"></div>
+
+  <h3>Five things the comparison showed</h3>
+  <p>Click one to see what we saw and what the decision rule says.</p>
+  <div class="chips" id="stackChips">
+    <button class="chip" data-i="0" aria-pressed="false">The cheap one</button>
+    <button class="chip" data-i="1" aria-pressed="false">The best one</button>
+    <button class="chip" data-i="2" aria-pressed="false">Cost per usable answer</button>
+    <button class="chip" data-i="3" aria-pressed="false">A vendor that is down</button>
+    <button class="chip" data-i="4" aria-pressed="false">Which document to write</button>
+  </div>
+  <div class="readout" id="stackOut" aria-live="polite">Click an item above.</div>
+
+  <div class="callout warn"><strong class="t">Do not read the prices as quotes</strong>
+    The prices in <code>config/prices.toml</code> and the terms in <code>config/providers.toml</code> carry a date and the word &ldquo;assumption&rdquo; or &ldquo;asserted&rdquo;. Before a real decision, copy the current facts from each vendor&rsquo;s own pages and contract, and change the date.
+  </div>
+  <div class="donebar"><button class="donebtn" data-done="s7" aria-pressed="false">Mark as done</button></div>
+</section>
+
+<!-- ================= 8 CHECK YOURSELF ================= -->
+<section class="card" id="s8">
+  <h2><span class="num">8.</span> Check yourself</h2>
+  <p>Five quick questions. They are not graded. They show you what to look at again. You can retry as often as you like.</p>
+  <div class="quiz" id="finalQuiz"></div>
+  <div class="score" id="finalScore" aria-live="polite"></div>
+
+  <h3>If something breaks: five signs and what they mean</h3>
+  <p>Click a sign you are seeing to see what it usually means.</p>
+  <div class="chips" id="traceChips">
+    <button class="chip" data-i="0">No module named vendor_sim</button>
+    <button class="chip" data-i="1">Can't instantiate abstract class</button>
+    <button class="chip" data-i="2">UnknownPromptVersion</button>
+    <button class="chip" data-i="3">Architecture test fails</button>
+    <button class="chip" data-i="4">Fingerprints: DIFFERENT</button>
+  </div>
+  <div class="readout" id="traceOut" aria-live="polite">Click an item above.</div>
+
+  <h3>Before Class 10: your checklist</h3>
+  <ul class="tasks" id="finalChecks">
+    <li data-check="1"><span class="ck"></span>Python 3.11 is installed, and the version command shows it</li>
+    <li data-check="2"><span class="ck"></span>My Class 9 project shows <code>220 passed, 1 xfailed</code>, and mypy is clean on 69 files</li>
+    <li data-check="3"><span class="ck"></span>I downloaded the Starter Files for Class 10 and unzipped them into my project, and mypy now says 70 files</li>
+    <li data-check="4"><span class="ck"></span><code>git --version</code> works, and my name and email are set</li>
+    <li data-check="5"><span class="ck"></span>I can say what a port and an adapter are, in my own words</li>
+    <li data-check="6"><span class="ck"></span>I can say why <code>isinstance</code> is not enough to check a Protocol</li>
+    <li data-check="7"><span class="ck"></span>I can name the three kinds of fact in a provider comparison</li>
+    <li data-check="8"><span class="ck"></span>I tried the games and answered the quiz</li>
+  </ul>
+  <p class="small muted">Click an item to tick it. Your ticks are saved in this browser only.</p>
+
+  <div class="callout ok"><strong class="t">What happens next</strong>
+    In Class 10 you will audit the Workbench for hidden dependencies, draw the seam, test with fakes, guard the layers with an architecture test, work on trunk and settle a real merge conflict, review a pull request with evidence, pin the prompt with a contract, plug in a second simulated vendor, and compare it using only what was measured. We finish with a recommendation to a client and the decision written down. Send your instructor a note if any step above did not work.
+  </div>
+  <div class="donebar"><button class="donebtn" data-done="s8" aria-pressed="false">Mark as done</button></div>
+</section>
+
+<footer>FDE Module 2 &middot; Class 10 pre-read</footer>
+</div>
+
+<script>
+(function () {
+  'use strict';
+  function $(s, r) { return (r || document).querySelector(s); }
+  function $$(s, r) { return Array.prototype.slice.call((r || document).querySelectorAll(s)); }
+  function esc(t) { return String(t).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;'); }
+
+  /* ---------- tabs ---------- */
+  $$('.tabs').forEach(function (box) {
+    var btns = $$('[role="tab"]', box), panels = $$('.tabpanel', box);
+    function show(name) {
+      btns.forEach(function (b) { b.setAttribute('aria-selected', b.dataset.tab === name ? 'true' : 'false'); });
+      panels.forEach(function (p) { p.classList.toggle('active', p.dataset.panel === name); });
+    }
+    btns.forEach(function (b) { b.addEventListener('click', function () { show(b.dataset.tab); }); });
+    box._show = show;
+  });
+  try {
+    var plat = ((navigator.userAgentData && navigator.userAgentData.platform) || navigator.platform || navigator.userAgent || '').toLowerCase();
+    var b1 = $('[data-tabs="pyver"]');
+    if (b1 && b1._show) b1._show(plat.indexOf('win') > -1 ? 'win' : 'mac');
+  } catch (e) { /* ignore */ }
+
+  /* ---------- copy buttons ---------- */
+  $$('.codeblock').forEach(function (cb) {
+    var btn = $('.copy', cb), pre = $('pre', cb);
+    if (!btn || !pre) return;
+    btn.addEventListener('click', function () {
+      var text = pre.textContent;
+      function ok() { btn.textContent = 'Copied'; setTimeout(function () { btn.textContent = 'Copy'; }, 1400); }
+      function fallback() {
+        var ta = document.createElement('textarea'); ta.value = text; document.body.appendChild(ta); ta.select();
+        try { document.execCommand('copy'); ok(); } catch (e2) { btn.textContent = 'Select and copy'; }
+        document.body.removeChild(ta);
+      }
+      try {
+        if (navigator.clipboard && navigator.clipboard.writeText) { navigator.clipboard.writeText(text).then(ok, fallback); }
+        else { fallback(); }
+      } catch (e) { fallback(); }
+    });
+  });
+
+  /* ---------- progress (per viewer, saved in this browser only) ---------- */
+  var done = {};
+  try { done = JSON.parse(localStorage.getItem('c10preread') || '{}') || {}; } catch (e) { done = {}; }
+  function save() { try { localStorage.setItem('c10preread', JSON.stringify(done)); } catch (e) { /* ignore */ } }
+  function refresh() {
+    var ids = ['s1', 's2', 's3', 's4', 's5', 's6', 's7', 's8'], n = 0;
+    ids.forEach(function (id) {
+      var on = !!done[id]; if (on) n++;
+      $$('[data-done="' + id + '"]').forEach(function (b) { b.setAttribute('aria-pressed', on ? 'true' : 'false'); b.textContent = on ? 'Done ✓' : 'Mark as done'; });
+      var a = $('nav a[data-s="' + id + '"]'); if (a) a.classList.toggle('done', on);
+    });
+    $('#bar').style.width = Math.round(n / ids.length * 100) + '%';
+    $('#pct').textContent = 'Progress: ' + n + ' of ' + ids.length + ' sections marked done';
+  }
+  $$('[data-done]').forEach(function (b) {
+    b.addEventListener('click', function () { done[b.dataset.done] = !done[b.dataset.done]; save(); refresh(); });
+  });
+  try { refresh(); } catch (e) { /* ignore */ }
+
+  /* ---------- generic chip readout ---------- */
+  function chipReadout(chipSel, outSel, data, fixLabel) {
+    $$(chipSel).forEach(function (c) {
+      c.addEventListener('click', function () {
+        $$(chipSel).forEach(function (x) { x.setAttribute('aria-pressed', 'false'); });
+        c.setAttribute('aria-pressed', 'true');
+        var h = data[+c.dataset.i];
+        $(outSel).innerHTML = '<strong>' + h[0] + '</strong><br>' + h[1] + '<br><strong style="color:var(--ok)">' + fixLabel + '</strong> ' + h[2];
+      });
+    });
+  }
+
+  chipReadout('#hideChips .chip', '#hideOut', [["A hidden dependency", "The starter audit found one module importing the vendor SDK (<code>llm_client</code>), three functions that default an argument to <code>call_model</code>, and a <code>Settings</code> bag of 24 fields. 30 functions take it, and 8 only pass it on.", "Draw a port, and move the SDK behind an adapter. After the class changes, the SDK is imported in <code>providers</code> only, one default to <code>call_model</code> is left (in <code>run_batch</code>, where the pieces are joined), and <code>Settings</code> has 25 fields, one of them the new <code>provider</code> setting."], ["A fake that is too loud", "A faithful fake that fails the way the real client fails took 3 attempts and then answered. A loud fake that raised <code>ValueError</code> took 1 attempt and raised. The retry rule only retries timeouts, rate limits and server errors.", "A stand-in has to behave like the real thing, or the test proves nothing. Fakes in the class raise what the real client raises, and a contract test runs the same checks on every adapter."], ["A prompt label that lies", "In the starter, <code>settings.toml</code> could say <code>v9</code> and the run would start with prompt_version v9, though only v2 exists. The cache key changed with the label, and nothing stopped it.", "A prompt contract registers each version with a fingerprint. Now start-up stops: <code>UnknownPromptVersion: prompt version 'v9' is not registered (known: v2)</code>. The v2 fingerprint is <code>8336cebfe0f7</code>."], ["A cheaper vendor that looks good", "<code>northwind-lite</code> showed grounded 5 of 5, and the lowest cost per usable suggestion (0.000268 USD). But only 7 of its 10 replies were valid, so 5 of 5 counts the survivors.", "Requirements are written first. Structural validity of 7 of 10 is below the 0.9 minimum, so it fails the gate and is not ranked."]], 'The fix:');
+
+  /* ---------- section 4: folder explorer ---------- */
+  var DIRS = {"root": ["The whole project", "The Class 9 layout stays. Class 10 adds a port file, adapters for files, memory and vendors, a prompt contract, a provider comparison, a simulated vendor and three short documents. Click a folder to see what changes."], "src": ["src/meridian_workbench/", "New: <code>ports.py</code> (what the core needs), <code>file_adapters.py</code> and <code>memory_adapters.py</code> (real files, and in-memory versions for tests), <code>judge.py</code> (the judging moved out of the loaders), <code>providers.py</code> (the vendor adapters), <code>prompt_contract.py</code> and <code>provider_compare.py</code>. The starter pack adds <code>vendor_sim.py</code>, the simulated vendor. Changed, each keeping its old behaviour: <code>ai_client.py</code>, <code>llm_client.py</code>, <code>pipeline.py</code>, <code>config.py</code>, <code>gateway.py</code>, <code>async_ai.py</code>, <code>batch.py</code>, <code>evaluation.py</code>, <code>loaders.py</code>, <code>logs.py</code>, <code>reconcile.py</code>, <code>retry.py</code> and <code>sources.py</code>."], "tests": ["tests/", "Five new files, written mostly in class: <code>test_architecture.py</code> (27 checks), <code>test_ports.py</code> (10), <code>test_client_contract.py</code> (35, the same checks run on each vendor adapter), <code>test_prompt_contract.py</code> (8) and <code>test_provider_compare.py</code> (11). That is 91 new checks. At the end there are 311 checks, and one that is expected to fail."], "config": ["config/", "<code>providers.toml</code> is new, in your starter pack: the written requirements, and what we <em>assume</em> about each candidate, with a date. <code>prices.toml</code> gets two more rows, also from the starter pack. <code>settings.toml</code> gains <code>provider = &quot;anthropic&quot;</code> under <code>[ai]</code> and a note that <code>prompt_version</code> must name a registered prompt."], "docs": ["docs/", "New: <code>ports_and_adapters.md</code>, <code>branching_and_review.md</code>, <code>decision_documents.md</code> and <code>adr/0001-llm-client-port.md</code>, the first decision record. The empty template, <code>adr/0000-template.md</code>, is in your starter pack. <code>terminology.md</code> gains the new terms."], "files": ["pyproject.toml and README.md", "The version moves from 0.8.0 to 0.9.0, and the README gets a new section describing the ports, the adapters, the prompt contract and the provider comparison."]};
+  function showDir(k) {
+    var d = DIRS[k];
+    $('#treeTitle').textContent = d[0];
+    $('#treeText').innerHTML = '<p style="margin:0">' + d[1] + '</p>';
+  }
+  $$('#treeBox button').forEach(function (b) {
+    b.addEventListener('click', function () {
+      $$('#treeBox button').forEach(function (x) { x.setAttribute('aria-pressed', 'false'); });
+      b.setAttribute('aria-pressed', 'true');
+      showDir(b.dataset.d);
+    });
+  });
+  showDir('root');
+
+  /* ---------- sorter ---------- */
+  function sorter(el, bins, items, doneMsg) {
+    var sel = null, left = items.length, wrong = 0;
+    var pool = document.createElement('div'); pool.className = 'pool';
+    var hint = document.createElement('p'); hint.className = 'hint';
+    var grid = document.createElement('div'); grid.className = 'bins';
+    var chips = [];
+    items.forEach(function (it) {
+      var c = document.createElement('button'); c.className = 'chip'; c.textContent = it.t; c.setAttribute('aria-pressed', 'false');
+      c.addEventListener('click', function () {
+        chips.forEach(function (x) { x.classList.remove('sel'); x.setAttribute('aria-pressed', 'false'); });
+        sel = it; c.classList.add('sel'); c.setAttribute('aria-pressed', 'true');
+        hint.className = 'hint'; hint.textContent = 'Now click the bin for this item.';
+      });
+      it.chip = c; chips.push(c); pool.appendChild(c);
+    });
+    bins.forEach(function (b) {
+      var d = document.createElement('button'); d.className = 'bin';
+      d.innerHTML = '<b>' + esc(b.label) + '</b><span class="why">' + esc(b.sub || '') + '</span><span class="placed"></span>';
+      d.addEventListener('click', function () {
+        if (!sel) { hint.className = 'hint'; hint.textContent = 'Click an item first, then a bin.'; return; }
+        var it = sel;
+        if (it.bin === b.k) {
+          var s = document.createElement('span'); s.textContent = it.t; $('.placed', d).appendChild(s);
+          pool.removeChild(it.chip); sel = null; left--;
+          hint.className = 'hint good'; hint.textContent = 'Correct. ' + it.why;
+          if (!left) {
+            var e = document.createElement('span'); e.className = 'empty'; e.textContent = 'All sorted.'; pool.appendChild(e);
+            hint.textContent = (wrong === 0 ? 'Perfect, with no mistakes. ' : 'All sorted, with ' + wrong + ' wrong ' + (wrong === 1 ? 'try' : 'tries') + '. ') + (doneMsg || '');
+          }
+        } else {
+          wrong++; d.classList.add('flash'); setTimeout(function () { d.classList.remove('flash'); }, 500);
+          hint.className = 'hint bad'; hint.textContent = 'Not quite. ' + (it.hint || 'Think about what went wrong.');
+        }
+      });
+      grid.appendChild(d);
+    });
+    el.appendChild(pool); el.appendChild(hint); el.appendChild(grid);
+  }
+  sorter($('#sortKinds'), [{"k": "proto", "label": "Protocol", "sub": "a shape, no inheritance"}, {"k": "abc", "label": "ABC", "sub": "shared steps, must inherit"}], [{"t": "LlmClient: anything with a matching complete() fits", "bin": "proto", "why": "A Protocol describes a shape. A class that has the method fits, and never has to inherit from anything.", "hint": "Does it need a parent class?"}, {"t": "ProviderAdapter: a base class with holes for each vendor to fill", "bin": "abc", "why": "An ABC holds shared steps and marks some methods as abstract. Each vendor adapter inherits it and fills the holes.", "hint": "Is there shared code to inherit?"}, {"t": "HalfAdapter: Can't instantiate abstract class ... abstract methods _to_reply, _translate", "bin": "abc", "why": "Only an ABC refuses to build an incomplete subclass, and says so at the moment you build it.", "hint": "Which one refuses to be built?"}, {"t": "PlainFake never inherits, and isinstance(PlainFake(), LlmClient) is True", "bin": "proto", "why": "A runtime-checkable Protocol matches on method names, so a class fits without a parent.", "hint": "Which one matches without inheritance?"}, {"t": "RecordSource, ReportSink, RunJournal and BatchStore: small shapes the core asks for", "bin": "proto", "why": "Each is a small shape the core needs. A test fake provides only what the test touches.", "hint": "Small shapes, no shared code"}, {"t": "One shared sequence of steps, with the vendor-specific steps left for each adapter", "bin": "abc", "why": "This is a template method: the base class fixes the order, and each subclass fills in its own steps.", "hint": "Who owns the order of the steps?"}], "A Protocol is a shape. An ABC is shared steps with holes to fill.");
+
+  /* ---------- section 6 ---------- */
+  sorter($('#sortWrap'), [{"k": "trunk", "label": "Trunk-based", "sub": "small steps into main"}, {"k": "flow", "label": "GitFlow", "sub": "develop and release branches"}], [{"t": "Everyone merges into main in small steps, often", "bin": "trunk", "why": "Trunk-based work keeps changes small and merges them often, so two people drift apart for hours, not weeks.", "hint": "Which one has one main line?"}, {"t": "Long-lived branches: develop and main", "bin": "flow", "why": "In the class repository the GitFlow run ended with the long-lived branches ['develop', 'main'].", "hint": "Which one keeps two lines alive?"}, {"t": "The same three changes took 6 commits besides the first", "bin": "trunk", "why": "Trunk took 6 commits besides the first for the three changes, with ['main'] as the only long-lived branch.", "hint": "Fewer commits, fewer branches"}, {"t": "The same three changes took 9 commits besides the first", "bin": "flow", "why": "GitFlow took 9 commits besides the first for the same three changes, because of the extra merges between branches.", "hint": "More commits, more branches"}, {"t": "A short branch that lives for hours and is merged back the same day", "bin": "trunk", "why": "Short branches are part of trunk-based work. The branch exists to be reviewed, and then it is gone.", "hint": "How long does the branch live?"}, {"t": "Two people’s work first meets at a release merge, late in the cycle", "bin": "flow", "why": "Long-lived branches let work drift apart. Conflicts then arrive together, at the merge.", "hint": "When do the changes first meet?"}], "Small, frequent merges keep work from drifting apart.");
+
+  chipReadout('#closeChips .chip', '#closeOut', [["&ldquo;All checks pass&rdquo;", "<code>python -m pytest -q</code> printed <code>1 failed, 256 passed, 1 xfailed</code>. The failing test was <code>test_the_core_does_not_import_an_adapter[ai_client]</code>.", "Please paste the real last line, and fix the failing test before asking for another review."], ["A layer is crossed", "The architecture test fails: <code>ai_client.py</code> imports <code>providers</code>, at line 30. The core has started to know which vendor it talks to.", "Remove the import. The core asks for an <code>LlmClient</code>, and the composition root decides which adapter to pass in."], ["A wrong type", "<code>python -m mypy</code> printed <code>fallback.py:18: error: Incompatible return value type (got &quot;str&quot;, expected &quot;LlmReply&quot;)</code>.", "Return an <code>LlmReply</code>, not a string."], ["A prompt leaks into an error", "A test made the primary fail and read the message: <code>primary failed on Note: the customer lives at 12 Hidden St: boom</code>. A customer address is now in an error that may be logged.", "Put only the error class and the case id in the message, never the prompt or the note text."], ["Two people, one setting", "Ana set <code>max_concurrency = 4</code> (the vendor limit is low). Ben set <code>16</code> (the nightly batch is large). <code>git merge</code> stopped with <code>CONFLICT (content): Merge conflict in settings.toml</code>.", "Decide together, and write the reasons in the file. The class resolved it to <code>6</code>, with both reasons as comments, and the merge commit says why."]], 'The ask:');
+
+  /* ---------- section 7 ---------- */
+  sorter($('#sortRetry'), [{"k": "meas", "label": "Measured", "sub": "counted by running here"}, {"k": "sim", "label": "Simulated", "sub": "a stand-in constant"}, {"k": "asr", "label": "Asserted", "sub": "a vendor says so"}], [{"t": "7 of the 10 replies from northwind-lite had the right shape", "bin": "meas", "why": "This was counted by running the golden set and checking every reply. It is the only kind of fact the Workbench can measure here.", "hint": "Did we run it and count?"}, {"t": "northwind-pro: 1.00 simulated seconds for the ten-note run (0.10 per call)", "bin": "sim", "why": "Every wait here is a named constant in the providers file, not a measurement of a real vendor.", "hint": "Is it a named constant for a wait?"}, {"t": "northwind-pro keeps prompts for 30 days", "bin": "asr", "why": "Retention is what a vendor says in its terms. Nobody checked it, so it is asserted, and it is compared with our limit of 0 days.", "hint": "Who would know this?"}, {"t": "The incumbent’s data region is eu", "bin": "asr", "why": "A data region comes from a contract or a questionnaire. It is marked asserted in the file until someone verifies it.", "hint": "Can the Workbench count this?"}, {"t": "northwind-pro gave a valid reply for 10 of 10 notes", "bin": "meas", "why": "Valid replies are counted by the Workbench, on the same golden set for every provider.", "hint": "Counted, or stated?"}, {"t": "northwind-lite allows 12,000 requests per minute", "bin": "asr", "why": "A rate limit is a vendor figure. We did not test it, so it is asserted.", "hint": "Whose number is it?"}, {"t": "The incumbent: 0.40 simulated seconds for the ten-note run (0.04 per call)", "bin": "sim", "why": "It is labelled simulated seconds. It is a stand-in constant, not the speed of a real model.", "hint": "Has the word simulated in it"}], "Keep the three kinds of fact apart, and say which kind each number is.");
+
+  chipReadout('#stackChips .chip', '#stackOut', [["The cheap one", "<code>northwind-lite</code>: 7 of 10 valid, 5 usable, cost 0.001342 USD. It also says grounded 5 of 5, which counts only the answers it managed to give.", "It fails the gate: <strong>structural validity 7 of 10 is below 0.9</strong>. It is not ranked, however cheap it is."], ["The best one", "<code>northwind-pro</code>: 10 of 10 valid, 7 usable, cost 0.013464 USD. It is the best on quality, and the slowest at 1.00 simulated seconds for the ten-note run (0.10 per call).", "It fails on <strong>region</strong> (us, we need eu) and on <strong>retention</strong> (30 days, our limit is 0). Both are asserted facts, so they are checked before any contract is signed."], ["Cost per usable answer", "Incumbent: 0.004443 USD for 7 usable, so 0.000635 each. Lite: 0.001342 for 5, so 0.000268. Pro: 0.013464 for 7, so 0.001923.", "Divide the cost by the usable answers, not by the calls. And only compare the providers that pass the gate: here that is the incumbent."], ["A vendor that is down", "<code>northwind-pro</code> answering 503 to everything: two suggestions came back <strong>UNAVAILABLE</strong>, one ABSTAINED and one had none, and the rules still flagged the same four cases on every provider: C-1002, C-1004, C-1005 and C-1006.", "The rules never see the vendor. <code>rules.py</code> hashes to <code>541afbdc4c6c</code> before and after a provider swap."], ["Which document to write", "An <strong>ADR</strong> records one decision already made, on one page, with its reasons. An <strong>RFC</strong> asks other people for comments before a decision. A <strong>design document</strong> explains how something large will be built.", "Here the port is an ADR (<code>0001-llm-client-port.md</code>), and the choice of a second vendor starts as an RFC, because other people have to be asked."]], 'The decision:');
+
+  chipReadout('#traceChips .chip', '#traceOut', [["ModuleNotFoundError: No module named 'meridian_workbench.vendor_sim'", "The starter pack was not unzipped into the project, or went into the wrong folder.", "Check that <code>vendor_sim.py</code> is under <code>src/meridian_workbench/</code> and <code>providers.toml</code> is under <code>config/</code>."], ["TypeError: Can't instantiate abstract class HalfAdapter with abstract methods _to_reply, _translate", "An adapter built on the ABC is missing methods it has to fill in.", "This is the right kind of red in class. Write both methods, and the adapter can be built."], ["UnknownPromptVersion: prompt version 'v9' is not registered (known: v2)", "<code>settings.toml</code> names a prompt that is not registered in the contract.", "Register the new version and pin its fingerprint. Do not edit an old version: a changed v2 fails its pin."], ["AssertionError: rules.py line 28 imports the adapter file_adapters", "The architecture test found the core importing an adapter.", "Take the import out, and depend on the port. The core must not know which adapter is behind it."], ["Fingerprints: DIFFERENT from before", "A trusted output changed when it should not have.", "Stop. Find which file changed and why, before going any further. Class 10 changes structure, never the reports."]], 'What it means:');
+
+  /* ---------- quiz ---------- */
+  function quiz(el, items, scoreEl) {
+    var answered = 0, right = 0;
+    items.forEach(function (it, qi) {
+      var q = document.createElement('div'); q.className = 'q';
+      var p = document.createElement('p'); p.className = 'qt'; p.textContent = (qi + 1) + '. ' + it.q; q.appendChild(p);
+      var fb = document.createElement('div'); fb.className = 'fb';
+      var btns = [];
+      it.o.forEach(function (txt, oi) {
+        var b = document.createElement('button'); b.className = 'opt'; b.textContent = txt; btns.push(b);
+        b.addEventListener('click', function () {
+          if (btns.some(function (x) { return x.disabled; })) return;
+          btns.forEach(function (x) { x.disabled = true; });
+          answered++;
+          if (oi === it.a) { b.classList.add('right'); right++; fb.textContent = 'Correct. ' + it.e; fb.style.color = 'var(--ok)'; }
+          else { b.classList.add('wrong'); btns[it.a].classList.add('right'); fb.textContent = 'Not quite. ' + it.e; fb.style.color = 'var(--bad)'; }
+          if (scoreEl && answered === items.length) {
+            scoreEl.textContent = 'You got ' + right + ' of ' + items.length + '. ' + (right === items.length ? 'Great work.' : 'Re-read the sections for any you missed, then reload the page to try again.');
+          }
+        });
+        q.appendChild(b);
+      });
+      q.appendChild(fb); el.appendChild(q);
+    });
+  }
+  quiz($('#finalQuiz'), [{"q": "A class has a complete method that takes a plain string, yet isinstance(obj, LlmClient) is True. Why?", "o": ["The decorator compares signatures, and Python judged these two close enough", "isinstance only checks method names, and mypy is what checks signatures", "Protocols are skipped when the program runs, so every check will pass", "The class inherited from LlmClient somewhere up its chain of parents"], "a": 1, "e": "A runtime-checkable Protocol is checked by name only. In class, isinstance said True for the wrong shape, and mypy reported the incompatible type. Use the runtime check for a missing method, and mypy for the signature."}, {"q": "A faithful fake needed 3 attempts and a loud fake needed 1. What does the loud fake show?", "o": ["The retry rule has a bug that only the loud fake can bring to light", "A stricter fake is always a better test of how the real client acts", "Two fakes of one port may behave differently, since tests are private", "A stand-in that raises what the real client never raises misleads"], "a": 3, "e": "The loud fake raised ValueError, which the retry rule does not retry, so the test went down a path the real client never takes. A stand-in must behave like the real thing. That is the substitution idea in SOLID."}, {"q": "What is the main risk of a branch that lives for weeks?", "o": ["Its changes meet everyone else’s late, so conflicts arrive together", "Git gets slower, because each commit on a long branch costs more time", "Reviewers cannot read it, since Git limits how large a branch can be", "It must be deleted, since only the main branch may hold new changes"], "a": 0, "e": "Work that stays apart drifts apart, and the differences all show up at the merge. The same three changes took 6 commits on trunk and 9 on GitFlow (besides the first), and trunk had only one long-lived branch."}, {"q": "A pull request says all checks pass. What should your review comment contain?", "o": ["A request to trust the author, because the author ran the checks", "A short remark that the change looks fine from where you are", "The command you ran, the line it printed, and what you ask for", "A list of every style choice you would have made differently"], "a": 2, "e": "Evidence can be checked and an opinion cannot. In class the real line was 1 failed, 256 passed, 1 xfailed, so the claim was wrong, and the comment said what to fix."}, {"q": "northwind-lite shows grounded 5 of 5. Why is it still not accepted?", "o": ["Five is too small a number for any grounded count to be believed", "Grounded counts come from the vendor, so nobody has checked them", "Only 7 of 10 replies were valid, so 5 of 5 counts only survivors", "It is the cheapest option, and the cheapest option is rejected"], "a": 2, "e": "Grounded is counted among the answers that were given, so a vendor that fails often can look perfect. The requirement on structural validity is checked first: 7 of 10 is below the 0.9 minimum, so it is not ranked."}], $('#finalScore'));
+
+  /* checklist: tick, and remember in this browser */
+  var checkDone = {};
+  try { checkDone = JSON.parse(localStorage.getItem('c10preread-checks') || '{}') || {}; } catch (e) { checkDone = {}; }
+  $$('#finalChecks li').forEach(function (li) {
+    var ck = $('.ck', li);
+    var tx = document.createElement('span'); tx.className = 'tx';
+    while (ck.nextSibling) tx.appendChild(ck.nextSibling);
+    li.appendChild(tx);
+    li.style.cursor = 'pointer';
+    function paint(on) { li.classList.toggle('done', on); ck.textContent = on ? '✓' : ''; }
+    paint(!!checkDone[li.dataset.check]);
+    li.addEventListener('click', function () {
+      checkDone[li.dataset.check] = !checkDone[li.dataset.check];
+      paint(!!checkDone[li.dataset.check]);
+      try { localStorage.setItem('c10preread-checks', JSON.stringify(checkDone)); } catch (e) { /* ignore */ }
+    });
+  });
+
+  /* nav highlight while scrolling */
+  try {
+    var secs = $$('section.card'), links = $$('nav a');
+    window.addEventListener('scroll', function () {
+      var cur = secs[0].id;
+      secs.forEach(function (s) { if (s.getBoundingClientRect().top < 160) cur = s.id; });
+      links.forEach(function (a) { a.style.fontWeight = a.dataset.s === cur ? '700' : '400'; });
+    }, { passive: true });
+  } catch (e) { /* ignore */ }
+})();
+</script>
+</body>
+</html>
